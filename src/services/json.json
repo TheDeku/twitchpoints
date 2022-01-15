@@ -1,0 +1,58 @@
+{
+    "total": 5,
+    "data": [
+        {
+            "id": "c549e11a-dc43-4a1a-83bc-b0260bfa6bf1",
+            "status": "webhook_callback_verification_failed",
+            "type": "channel.follow",
+            "version": "1",
+            "condition": { "broadcaster_user_id": "12826" },
+            "created_at": "2021-10-23T07:02:54.998438811Z",
+            "transport": { "method": "webhook", "callback": "https://0e03-99-251-42-188.ngrok.io/api//webhooks" },
+            "cost": 0
+        },
+        {
+            "id": "8afb8ef1-f63b-4103-a3ae-733e64075a41",
+            "status": "webhook_callback_verification_failed",
+            "type": "channel.follow",
+            "version": "1",
+            "condition": { "broadcaster_user_id": "12826" },
+            "created_at": "2021-10-23T07:04:10.391625566Z",
+            "transport": { "method": "webhook", "callback": "https://0e03-99-251-42-188.ngrok.io/api/webhooks" },
+            "cost": 0
+        },
+        {
+            "id": "16534711-b840-4e06-a707-00656d38c9f5",
+            "status": "webhook_callback_verification_failed",
+            "type": "channel.follow",
+            "version": "1",
+            "condition": { "broadcaster_user_id": "12826" },
+            "created_at": "2021-10-23T07:08:41.455341352Z",
+            "transport": { "method": "webhook", "callback": "https://0e03-99-251-42-188.ngrok.io/api/webhooks" },
+            "cost": 0
+        },
+        {
+            "id": "b5c7e4fe-e5a9-420e-a260-1b00a35254a9",
+            "status": "webhook_callback_verification_failed",
+            "type": "channel.follow",
+            "version": "1",
+            "condition": { "broadcaster_user_id": "12826" },
+            "created_at": "2021-10-23T07:09:43.139614078Z",
+            "transport": { "method": "webhook", "callback": "https://0e03-99-251-42-188.ngrok.io/api/webhooks" },
+            "cost": 0
+        },
+        {
+            "id": "1c0bdaa1-c66b-4ea5-aaf4-0a9bd3157e4c",
+            "status": "enabled",
+            "type": "channel.follow",
+            "version": "1",
+            "condition": { "broadcaster_user_id": "12826" },
+            "created_at": "2021-10-23T07:11:24.316069816Z",
+            "transport": { "method": "webhook", "callback": "https://0e03-99-251-42-188.ngrok.io/api/webhooks" },
+            "cost": 1
+        }
+    ],
+    "max_total_cost": 10000,
+    "total_cost": 1,
+    "pagination": {}
+}

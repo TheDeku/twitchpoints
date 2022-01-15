@@ -1,0 +1,69 @@
+# This template uses jdk8 for verifying and deploying images
+variables:
+  DOCKER_TLS_CERTDIR: ""
+  DOCKER_DRIVER: overlay2
+  DOCKER_HOST: tcp://docker:2375
+
+stages:
+  - release
+  - deploy  # solo se ejecutara en el branch master
+
+release:
+  image: docker:19.03.12
+  stage: release
+  services:
+    - docker:19.03.12-dind
+  cache: {}
+  before_script:
+    - docker info
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - export CI_REGISTRY_IMAGE=$CI_REGISTRY$REGISTRY_IMAGE
+    - echo "$CI_REGISTRY_IMAGE-$CI_COMMIT_BRANCH"
+    - export LATEST=latest
+    - docker pull $CI_REGISTRY_IMAGE-$CI_COMMIT_BRANCH:$LATEST || true
+    - docker build --cache-from $CI_REGISTRY_IMAGE-$CI_COMMIT_BRANCH:$LATEST --tag $CI_REGISTRY_IMAGE-$CI_COMMIT_BRANCH:$CI_COMMIT_SHA --tag $CI_REGISTRY_IMAGE-$CI_COMMIT_BRANCH:$LATEST .
+    - docker push $CI_REGISTRY_IMAGE-$CI_COMMIT_BRANCH:$CI_COMMIT_SHA
+    - docker push $CI_REGISTRY_IMAGE-$CI_COMMIT_BRANCH:$LATEST
+  only:
+    - develop
+    - qa
+    - master
+  tags:
+    - kubernetes
+
+deploy_live:
+  image:
+    name: registrycruzblanca.azurecr.io/pipeline/docker-kubectl-1.18:v1.0
+    entrypoint: [""]
+  stage: deploy
+  # dependencies:
+  #     - release
+  when: manual
+  allow_failure: false
+  only:
+    - develop
+    - qa
+    - master
+  environment:
+    name: $CI_COMMIT_BRANCH
+  before_script:
+    - echo "before script"
+    - sudo apt-get update && apt-get install gettext-base -y
+    - export IMAGEN_NAME=$CI_REGISTRY$REGISTRY_IMAGE-$CI_COMMIT_BRANCH:latest
+  script:
+    - "echo Deploy to aks developer: $CI_COMMIT_BRANCH"
+    - envsubst < ./k8s-manifests/deployment-tmp.yaml > ./k8s-manifests/deployment.yaml
+    - echo "variables aplicadas"
+    - |
+      if kubectl apply -f ./k8s-manifests/deployment.yaml | grep -q unchanged; then
+         echo "=> Patching deployment to force image update."
+         kubectl patch -f ./k8s-manifests/deployment.yaml -p "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"ci-last-updated\":\"$(date +'%s')\"}}}}}"
+      else
+         echo "=======> Deployment apply has changed the object, no need to force image update."
+      fi
+    - kubectl apply -f k8s-manifests/service.yaml
+    - echo "Deploy Success"
+    - kubectl get pods,svc,ingress,secrets -n carga-cmd
+  tags:
+    - kubernetes
