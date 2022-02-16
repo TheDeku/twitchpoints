@@ -14,7 +14,7 @@ export async function initializeBot(user:any) {
 
     await client.connect()
 
-    CronHelper.socialNetwork.start()
+    //CronHelper.socialNetwork.start()
     // return client;
 }
 

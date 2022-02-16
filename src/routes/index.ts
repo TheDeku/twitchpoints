@@ -2,6 +2,7 @@ import { Application, Router } from 'express'
 import  LoginTwitch  from "./api/loginTwitch";
 import  Webhooks  from "./public/webhooks";
 import  Notifications  from "./public/notifications";
+import  Chat  from "./public/chat";
 
 
 type RouteEntry = {
@@ -12,6 +13,7 @@ type RouteEntry = {
 const routes: RouteEntry[] = [
   // Rutas aqui como objetos { path: "/api", router: PersonRouter }
   { path: '/api/login', router: LoginTwitch },
+  { path: '/api/chat', router: Chat },
   { path: '/api/webhooks', router: Webhooks },
   { path: '/api/notification', router: Notifications },
 ]

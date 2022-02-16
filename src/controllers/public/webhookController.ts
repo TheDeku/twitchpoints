@@ -13,11 +13,10 @@ import { pushNotification, saveNotification } from '../../services/firebaseRepos
 export default class WebhooksController {
 	public async webhookCallback(req: Request, res: Response, next:NextFunction) {
 
-		// res.status(200).send(req.body)
+		console.log(req.body);
 		if (req.body.challenge) {
 			res.status(200).send(req.body.challenge)
-		}
-		if (req.body) {
+		}else if (req.body) {
 			// let db = database()
 			// let events:any[] = [];
 			// await db.ref().child("botones").get().then((snap) =>{
@@ -49,8 +48,11 @@ export default class WebhooksController {
 
 
 	public async getWebhooks(req: Request, res: Response, next:NextFunction){
+		let url = `https://id.twitch.tv/oauth2/token?client_id=${process.env.TWITCH_CLIENT_ID}&client_secret=${process.env.TWITCH_SECRET}&grant_type=client_credentials`
+		console.log(url);
         let twitchClient = await axios.post(`https://id.twitch.tv/oauth2/token?client_id=${process.env.TWITCH_CLIENT_ID}&client_secret=${process.env.TWITCH_SECRET}&grant_type=client_credentials`, {})
-
+		console.log(twitchClient.data.access_token);
+		console.log(process.env.TWITCH_CLIENT_ID);
 
 		let response = await axios.get("https://api.twitch.tv/helix/eventsub/subscriptions", {
             headers: { 'content-Type': 'application/json',"Authorization": `Bearer ${twitchClient.data.access_token}`,"CLIENT-ID":process.env.TWITCH_CLIENT_ID }

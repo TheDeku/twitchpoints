@@ -9,9 +9,10 @@ export default class LoginTwitchController {
 		// console.log(req)
 		res.send(200).json({algo:"algo"})
 	}
-
+	
 	public async loginCallBack(req: Request, res: Response, next:NextFunction) {
 		try {
+			console.log(req.user);
 			// console.log(req.body.accessToken);
 			initializeBot(req.user)
 
