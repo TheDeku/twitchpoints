@@ -50,13 +50,19 @@ export default class WebhooksController {
 	public async getWebhooks(req: Request, res: Response, next:NextFunction){
 		let url = `https://id.twitch.tv/oauth2/token?client_id=${process.env.TWITCH_CLIENT_ID}&client_secret=${process.env.TWITCH_SECRET}&grant_type=client_credentials`
 		console.log(url);
-        let twitchClient = await axios.post(`https://id.twitch.tv/oauth2/token?client_id=${process.env.TWITCH_CLIENT_ID}&client_secret=${process.env.TWITCH_SECRET}&grant_type=client_credentials`, {})
-		console.log(twitchClient.data.access_token);
-		console.log(process.env.TWITCH_CLIENT_ID);
+		let response = {data:"null"}
+		try {
+			let twitchClient = await axios.post(`https://id.twitch.tv/oauth2/token?client_id=${process.env.TWITCH_CLIENT_ID}&client_secret=${process.env.TWITCH_SECRET}&grant_type=client_credentials`, {})
+			console.log(twitchClient.data.access_token);
+			console.log(process.env.TWITCH_CLIENT_ID);
+	
+			response = await axios.get("https://api.twitch.tv/helix/eventsub/subscriptions", {
+				headers: { 'content-Type': 'application/json',"Authorization": `Bearer ${twitchClient.data.access_token}`,"CLIENT-ID":process.env.TWITCH_CLIENT_ID }
+			})
+		} catch (error) {
+			console.log(error);
+		}
 
-		let response = await axios.get("https://api.twitch.tv/helix/eventsub/subscriptions", {
-            headers: { 'content-Type': 'application/json',"Authorization": `Bearer ${twitchClient.data.access_token}`,"CLIENT-ID":process.env.TWITCH_CLIENT_ID }
-        })
 		res.status(200).json(response.data)
 	}
 }
