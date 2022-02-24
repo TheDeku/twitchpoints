@@ -6,9 +6,9 @@ export const strategy = ():Strategy => {
     return new OAuth2Strategy({
         authorizationURL: 'https://id.twitch.tv/oauth2/authorize',
         tokenURL: 'https://id.twitch.tv/oauth2/token',
-        clientID: '2xkwlq3zmgqcnwrej14nce8sbf9q2l',
-        clientSecret: '0vhtpegar0dkf8g7p7jx5athgsxiv8',
-        callbackURL: 'https://twitchpoints-production.up.railway.app/api/login/callback',
+        clientID: process.env.TWITCH_CLIENT_ID,
+        clientSecret: process.env.TWITCH_SECRET,
+        callbackURL: process.env.CALLBACK_URL,
         state: true
     },
         function (accessToken: any, refreshToken: any,scopes:any, profile: any, done: any) {
