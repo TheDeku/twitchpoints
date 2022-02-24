@@ -8,7 +8,7 @@ export const strategy = ():Strategy => {
         tokenURL: 'https://id.twitch.tv/oauth2/token',
         clientID: '2xkwlq3zmgqcnwrej14nce8sbf9q2l',
         clientSecret: '0vhtpegar0dkf8g7p7jx5athgsxiv8',
-        callbackURL: process.env.CALLBACK_URL,
+        callbackURL: 'https://twitchpoints-production.up.railway.app/api/login/callback',
         state: true
     },
         function (accessToken: any, refreshToken: any,scopes:any, profile: any, done: any) {

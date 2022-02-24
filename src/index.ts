@@ -29,7 +29,7 @@ const app = express()
 
 app.use(cors({ origin: '*' }))
 
-app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false }))
+app.use(session({ secret: 'dekubot', resave: false, saveUninitialized: false }))
 app.use(passport.initialize())
 app.use(passport.session())
 passport.use('twitch',strategy())
@@ -44,4 +44,4 @@ initFirebase()
 cleanChat()
 
 // Start app
-app.listen(process.env.PORT, () => console.log(`Run on port: ${process.env.PORT}`))
+app.listen(5700, () => console.log(`Run on port: ${5700}`))
