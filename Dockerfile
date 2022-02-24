@@ -1,7 +1,7 @@
 FROM node:12-alpine
 WORKDIR /app
 COPY . .
-ENV PORT 80
+ENV PORT 5700
 RUN npm i
-EXPOSE 80
-CMD ["npm", "start"]
+EXPOSE 5700
+CMD ["npm", "install"]
