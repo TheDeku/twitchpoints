@@ -4,9 +4,11 @@
 #     https://www.atlassian.com/git/tutorials/saving-changes/gitignore
 
 # Node artifact files
+cert/
 node_modules/
 dist/
 src/files/*
+
 
 # Compiled Java class files
 *.class
